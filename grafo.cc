@@ -12,6 +12,7 @@
 #include <iostream>
 #include <fstream>
 #include <stdio.h>
+#include <string>
 
 
 using namespace std;
@@ -154,7 +155,7 @@ class Grafo {
 
 			if(matriz[v1][v2] == NULO){
 				matriz[v1][v2] = peso;
-				if((matriz[v2][v1] != peso)&(v1 != v2)){
+				if((matriz[v2][v1] != peso)&&(v1 != v2)){
 					numAresta++;
 				}
 			}      
@@ -221,9 +222,109 @@ class Grafo {
 			numVertice = nVertice;
 		}//-------------------------------------------------------------------
 
+//==================================== Inicio: questao 2 ====================================
+
+		int getGrau(int idx){
+			int resp = 0;
+			for(int i=0; i<numVertice; i++){
+				if(matriz[i][idx] > 0){
+					resp++;
+				}
+			}
+			return resp;
+		}
+
+		bool isGrafoSimples(){ return true;}
+
+		bool isGrafoRegular(){ 
+			bool resp = true;
+			int grau = getGrau(0);
+			for(int i=1; resp&&(i<numVertice); i++){
+				if(grau != getGrau(i)){
+					resp = false;
+				}
+			}
+			return resp;
+		}
+
+		bool isGrafoNulo(){
+			bool resp = true;
+			//se os demais vertices estiverem grau 0, o primeiro necessariamente ter grau 0
+			for(int i=1; resp&&(i<numVertice); i++){ 
+				if(getGrau(i) != 0){
+					resp = false;
+				}
+			}
+			return resp;
+		}
+
+		bool isGrafoCompleto(){
+			bool resp = true;
+			//se os demais vertices estiverem grau numVertice-1, o primeiro necessariamente ter grau  numVertice-1
+			for(int i=1; resp&&(i<numVertice); i++){
+				if(getGrau(i) != (numVertice-1)){
+					resp = false;
+				}
+			}
+			return resp;
+		}
+
+		bool isGrafoEuleriano(){
+			bool resp = true;
+			//se os demais vertices estiverem grau par, o primeiro necessariamente ter grau par
+			for(int i=1; resp&&(i<numVertice); i++){
+				if(getGrau(i)%2 != 0){
+					resp = false;
+				}
+			}
+			return resp;
+		}
+
+		bool isGrafoUnicursal(){
+			bool resp = true;
+			int cont = 0;
+			//se os demais vertices estiverem grau par, o primeiro necessariamente ter grau par
+			for(int i=1; resp&&(i<numVertice); i++){
+				if(getGrau(i)%2 != 0){
+					cont++;
+					if(cont > 0){
+						resp = false;
+					}
+				}
+			}
+			return resp;
+		}
+
+//==================================== Fim questao 2 ======================================
+
+//==================================== Inicio: questao 3 ====================================
+
+
+//==================================== Fim questao 3 ======================================
+
+//==================================== Inicio: questao 4 ====================================
+
+
+//==================================== Fim questao 4 ======================================
+
+//==================================== Inicio: questao 5 ====================================
+
+
+//==================================== Fim questao 5 ======================================
 	public:
 		void imprimirVerticeAresta(){
 			cout << numVertice << " " << numAresta << "\n";
+		}
+
+		void questao2(){
+			string resp = "";
+			resp += (isGrafoSimples()) ? "SIM " : "NAO "; 
+			resp += (isGrafoRegular()) ? "SIM " : "NAO ";
+			resp += (isGrafoNulo()) ? "SIM " : "NAO ";
+			resp += (isGrafoCompleto()) ? "SIM " : "NAO ";
+			resp += (isGrafoEuleriano()) ? "SIM " : "NAO ";
+			resp += (isGrafoUnicursal()) ? "SIM " : "NAO ";
+			cout << resp << endl; 
 		}
 };
 
@@ -238,6 +339,7 @@ int main(int argc, char **argv){
 	while (g->lerGrafo() == true){
 		g->imprimir();
 		g->imprimirVerticeAresta();
+		g->questao2();
 		//g->imprimirPendenteAndIsolado();
 		delete g;
 		g = new Grafo;
