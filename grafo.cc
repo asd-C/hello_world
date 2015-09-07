@@ -90,7 +90,7 @@ class Grafo {
 					cin >> temp;
 					if(temp > 0){
 						inserirAresta(i, j, temp);
-						inserirAresta(j, i, temp);a
+						inserirAresta(j, i, temp);
 					}
 				}
 			}
@@ -147,7 +147,6 @@ class Grafo {
 				printf("ERRO! Vertice %i nao existe no grafico", v1);
 				return;
 			}
-
 			if(v2 > MAX_VERTICE){
 				printf("ERRO! Vertice %i nao existe no grafico", v2);
 				return;
@@ -155,11 +154,11 @@ class Grafo {
 
 			if(matriz[v1][v2] == NULO){
 				matriz[v1][v2] = peso;
-				numAresta++;
+				if((matriz[v2][v1] != peso)&(v1 != v2)){
+					numAresta++;
+				}
 			}      
 		}//-------------------------------------------------------------------
-
-
 
 		//--------------------------------------------------------------------
 		// isAresta: Retorna true se existe a aresta.
@@ -168,16 +167,12 @@ class Grafo {
 			return (matriz[v1][v2] != NULO);
 		}//-------------------------------------------------------------------
 
-
-
 		//--------------------------------------------------------------------
 		// getAresta: Retorna o peso da aresta.
 		//--------------------------------------------------------------------
 		Peso getAresta(Vertice v1, Vertice v2){
 			return (matriz[v1][v2]);
 		}//-------------------------------------------------------------------
-
-
 
 		//--------------------------------------------------------------------
 		// excluirAresta: Exclui uma aresta.
@@ -200,8 +195,6 @@ class Grafo {
 			}      
 		}//-------------------------------------------------------------------
 
-
-
 		//--------------------------------------------------------------------
 		// excluirTodasArestas: Exclui todas as arestas.
 		//--------------------------------------------------------------------
@@ -214,8 +207,6 @@ class Grafo {
 			}
 			numAresta = 0;
 		}//-------------------------------------------------------------------
-
-
 
 		//--------------------------------------------------------------------
 		// setNumVertice: Altera a variavel numVertice.
@@ -245,7 +236,7 @@ int main(int argc, char **argv){
 	Grafo *g = new Grafo;
 
 	while (g->lerGrafo() == true){
-		//g->imprimir();
+		g->imprimir();
 		g->imprimirVerticeAresta();
 		//g->imprimirPendenteAndIsolado();
 		delete g;
