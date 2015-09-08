@@ -249,7 +249,8 @@ class Grafo {
 
 		bool isGrafoNulo(){
 			bool resp = true;
-			//se os demais vertices estiverem grau 0, o primeiro necessariamente ter grau 0
+			//se os demais vertices estiverem grau 0, 
+			//o primeiro necessariamente ter grau 0
 			for(int i=1; resp&&(i<numVertice); i++){ 
 				if(getGrau(i) != 0){
 					resp = false;
@@ -260,7 +261,8 @@ class Grafo {
 
 		bool isGrafoCompleto(){
 			bool resp = true;
-			//se os demais vertices estiverem grau numVertice-1, o primeiro necessariamente ter grau  numVertice-1
+			//se os demais vertices estiverem grau numVertice-1, 
+			//o primeiro necessariamente ter grau  numVertice-1
 			for(int i=1; resp&&(i<numVertice); i++){
 				if(getGrau(i) != (numVertice-1)){
 					resp = false;
@@ -271,7 +273,8 @@ class Grafo {
 
 		bool isGrafoEuleriano(){
 			bool resp = true;
-			//se os demais vertices estiverem grau par, o primeiro necessariamente ter grau par
+			//se os demais vertices estiverem grau par, 
+			//o primeiro necessariamente ter grau par
 			for(int i=1; resp&&(i<numVertice); i++){
 				if(getGrau(i)%2 != 0){
 					resp = false;
@@ -283,7 +286,8 @@ class Grafo {
 		bool isGrafoUnicursal(){
 			bool resp = true;
 			int cont = 0;
-			//se os demais vertices estiverem grau par, o primeiro necessariamente ter grau par
+			//se os demais vertices estiverem grau par, 
+			//o primeiro necessariamente ter grau par
 			for(int i=1; resp&&(i<numVertice); i++){
 				if(getGrau(i)%2 != 0){
 					cont++;
@@ -299,6 +303,9 @@ class Grafo {
 
 //==================================== Inicio: questao 3 ====================================
 
+		bool isBipartite(){
+			
+		}
 
 //==================================== Fim questao 3 ======================================
 
