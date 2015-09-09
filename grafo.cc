@@ -303,8 +303,54 @@ class Grafo {
 
 //==================================== Inicio: questao 3 ====================================
 
+		// bool isBipartite(){}
+
 		bool isBipartite(){
-			
+			int* visitados = new int[numVertice];
+			int* fila = new int[numVertice];
+			int fila_inicio = 0,
+				fila_final = 0;
+			bool resp = true;
+
+			for(int i=0; i<numVertice; i++){
+				fila[i] = -1;
+				visitados[i] = -1;
+			}
+
+			for(int i=0; (i<numVertice)&&(resp); i++){
+				if(visitados[i] == -1){
+					visitados[i] = 0;
+					fila[fila_final] = i;
+					fila_final++;
+					resp = resp && isBipartite(visitados, fila, fila_inicio, fila_final);
+				}
+			}
+
+			delete visitados;
+			delete fila;
+			return resp;
+		}
+
+		bool isBipartite(int* visitados, int* fila, int& fila_inicio, int& fila_final){
+			bool resp = true;
+			if(fila_inicio != fila_final){
+				for(int i=0; (i<numVertice)&&(resp); i++){
+					if(isAresta(fila[fila_inicio], i)){
+						if(visitados[i] != visitados[fila[fila_inicio]]){
+							if(visitados[i] == -1){
+								visitados[i] = 1 - visitados[fila[fila_inicio]];
+								fila[fila_final] = i;
+								fila_final++;
+							}
+						}else{
+							resp = false;
+						}
+					}
+				}
+				fila_inicio++;
+				resp = resp && isBipartite(visitados, fila, fila_inicio, fila_final);
+			}
+			return resp;
 		}
 
 //==================================== Fim questao 3 ======================================
@@ -325,13 +371,17 @@ class Grafo {
 
 		void questao2(){
 			string resp = "";
-			resp += (isGrafoSimples()) ? "SIM " : "NAO "; 
-			resp += (isGrafoRegular()) ? "SIM " : "NAO ";
-			resp += (isGrafoNulo()) ? "SIM " : "NAO ";
-			resp += (isGrafoCompleto()) ? "SIM " : "NAO ";
-			resp += (isGrafoEuleriano()) ? "SIM " : "NAO ";
-			resp += (isGrafoUnicursal()) ? "SIM " : "NAO ";
+			resp += (isGrafoSimples()) 		? "SIM " : "NAO "; 
+			resp += (isGrafoRegular()) 		? "SIM " : "NAO ";
+			resp += (isGrafoNulo()) 		? "SIM " : "NAO ";
+			resp += (isGrafoCompleto()) 	? "SIM " : "NAO ";
+			resp += (isGrafoEuleriano()) 	? "SIM " : "NAO ";
+			resp += (isGrafoUnicursal()) 	? "SIM " : "NAO ";
 			cout << resp << endl; 
+		}
+
+		void questao3(){
+			cout << ((isBipartite()) ? "SIM " : "NAO ") << endl;
 		}
 };
 
@@ -347,6 +397,7 @@ int main(int argc, char **argv){
 		g->imprimir();
 		g->imprimirVerticeAresta();
 		g->questao2();
+		g->questao3();
 		//g->imprimirPendenteAndIsolado();
 		delete g;
 		g = new Grafo;
