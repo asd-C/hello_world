@@ -406,7 +406,7 @@ class Celula
 	public:
 		int peso;
 		int v2;
-		Celula(int peso_i, int v2_i){
+		Celula(int v2_i, int peso_i){
 			peso = peso_i;
 			v2 = v2_i;
 		}
@@ -442,6 +442,15 @@ class myList : public list<Celula*>
 			return resp;
 		}
 
+		Celula* find_cel(int a){
+			for (list<Celula*>::iterator it = begin(); it != end(); it++){
+				if((*it)->v2 == a){
+					return *it;
+				}
+			}
+			return NULL;
+		}
+
 	private:
 		void remove_all(){
 			for (list<Celula*>::iterator it = begin(); it != end(); it++){
@@ -456,12 +465,175 @@ class myList : public list<Celula*>
 
 //==================================== class grafo_lista ====================================
 
+class Grafo_list
+{
+	private:
+	int numVertice, 
+		 numAresta;
+
+	myList** mylist;
+	
+	public:
+		Grafo_list(){
+			numVertice = 0;
+			numAresta = 0;
+		}
+		~Grafo_list(){
+			remove_all();
+		}
+
+	private:
+		void remove_all(){
+
+		}
+
+		//--------------------------------------------------------------------
+		// inserirAresta: Insere uma nova aresta.
+		//--------------------------------------------------------------------
+		void inserirAresta(Vertice v1, Vertice v2, Peso peso){
+
+			if((v1 != v2)){
+				numAresta++;
+				mylist[v1]->push_back(new Celula(v2, peso));
+			}
+			      
+		}//-------------------------------------------------------------------
+
+		//--------------------------------------------------------------------
+		// isAresta: Retorna true se existe a aresta.
+		//--------------------------------------------------------------------
+		boolean isAresta(Vertice v1, Vertice v2){
+			return (mylist[v1]->find(v2));
+		}//-------------------------------------------------------------------
+/*
+		//--------------------------------------------------------------------
+		// getAresta: Retorna o peso da aresta.
+		//--------------------------------------------------------------------
+		Peso getAresta(Vertice v1, Vertice v2){
+			return (matriz[v1][v2]);
+		}//-------------------------------------------------------------------
+
+		//--------------------------------------------------------------------
+		// excluirAresta: Exclui uma aresta.
+		//--------------------------------------------------------------------
+		void excluirAresta(Vertice v1, Vertice v2){
+
+			if(v1 > numVertice){
+				printf("ERRO! Vertice %i nao existe no grafico",v1);
+				return;
+			}
+
+			if(v2 > numVertice){
+				printf("ERRO! Vertice %i nao existe no grafico",v2);
+				return;
+			}
+
+			if(matriz[v1][v2] != NULO){
+				matriz[v1][v2] = NULO;
+				numAresta--;
+			}      
+		}//-------------------------------------------------------------------
+
+		//--------------------------------------------------------------------
+		// excluirTodasArestas: Exclui todas as arestas.
+		//--------------------------------------------------------------------
+		void excluirTodasArestas(){
+			for(int i = 0; i < MAX_VERTICE; i++){
+				matriz[i][i] = NULO;
+				for(int j = i + 1; j < MAX_VERTICE; j++){
+					matriz[i][j] = matriz[j][i] = NULO;
+				}
+			}
+			numAresta = 0;
+		}//-------------------------------------------------------------------
+*/
+		//--------------------------------------------------------------------
+		// setNumVertice: Altera a variavel numVertice.
+		//--------------------------------------------------------------------
+		void setNumVertice(int nVertice){
+			numVertice = nVertice;
+		}//-------------------------------------------------------------------
+
+		void criar_listas(int num){
+			mylist = new myList*[num];
+			for(int i=0; i<num; i++){
+				mylist[i] = new myList;
+			}
+		}
+
+	public:
+		boolean lerGrafo(){
+			boolean resp;
+			int temp;
+
+			//Ler o numero de vertices
+			cin >> temp;
+			setNumVertice(temp);
+
+			resp = (numVertice > 0) ? true : false; 
+
+			if(resp) criar_listas(temp);
+
+			for(int i = 0; i < numVertice; i++){
+				for(int j = i+1; j < numVertice; j++){
+					cin >> temp;
+					if(temp > 0){
+						inserirAresta(i, j, temp);
+						inserirAresta(j, i, temp);
+					}
+				}
+			}
+			return resp;
+		}
+
+		void imprimir(){
+			int i = 0, j = 0;
+
+			printf("\nN = (%i)\n\t",numVertice);
+			for(i = 0; i < numVertice; i++){
+				if (i >= 100){
+					printf("\t(%i) ",i);
+				}else if(i >= 10){
+					printf("\t(0%i) ",i);
+				}else{
+					printf("\t(00%i) ",i);
+				}
+			}
+
+			for(i = 0; i < numVertice; i++){
+				if (i >= 100){
+					printf("\n(%i) - ",i);
+				}else if(i >= 10){
+					printf("\n(0%i) - ",i);
+				}else{
+					printf("\n(00%i) - ",i);
+				}
+				cout << "\t";
+				for(j = 0; j < numVertice; j++){
+					if(mylist[i]->find(j)){
+						cout << mylist[i]->find_cel(j)->peso << "\t";
+					}
+					else{
+						cout << ".\t";						
+					}
+				}
+			}
+
+			printf("\n");
+		}//-------------------------------------------------------------------
+
+	
+};
+
+
+//==================================== class grafo_lista ====================================
+
 //=====================================================================
 // FUNCAO PRINCIPAL
 //=====================================================================
 int main(int argc, char **argv){
 
-	Grafo *g = new Grafo;
+	/*Grafo *g = new Grafo;
 
 	while (g->lerGrafo() == true){
 		g->imprimir();
@@ -474,6 +646,13 @@ int main(int argc, char **argv){
 	}
 
 	delete g;
+*/
+/*	Grafo g;
+	g.lerGrafo();
+	g.imprimir();
 
+	Grafo_list gl;
+	gl.lerGrafo();
+	gl.imprimir();*/
 	return 0;
 }//--------------------------------------------------------------------
