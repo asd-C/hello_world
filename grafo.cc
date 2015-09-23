@@ -533,6 +533,134 @@ class Grafo_list
 				mylist[i] = new myList;
 			}
 		}
+//==================================== Inicio: questao 2 ====================================
+
+		int getGrau(int idx){
+			return mylist[idx]->size();
+		}
+
+		bool isGrafoSimples(){ return true;}
+
+		bool isGrafoRegular(){ 
+			bool resp = true;
+			int grau = getGrau(0);
+			for(int i=1; resp&&(i<numVertice); i++){
+				if(grau != getGrau(i)){
+					resp = false;
+				}
+			}
+			return resp;
+		}
+
+		bool isGrafoNulo(){
+			bool resp = true;
+			//se os demais vertices estiverem grau 0, 
+			//o primeiro necessariamente ter grau 0
+			for(int i=1; resp&&(i<numVertice); i++){ 
+				if(getGrau(i) != 0){
+					resp = false;
+				}
+			}
+			return resp;
+		}
+
+		bool isGrafoCompleto(){
+			bool resp = true;
+			//se os demais vertices estiverem grau numVertice-1, 
+			//o primeiro necessariamente ter grau  numVertice-1
+			for(int i=1; resp&&(i<numVertice); i++){
+				if(getGrau(i) != (numVertice-1)){
+					resp = false;
+				}
+			}
+			return resp;
+		}
+
+		bool isGrafoEuleriano(){
+			bool resp = true;
+			//se os demais vertices estiverem grau par, 
+			//o primeiro necessariamente ter grau par
+			for(int i=1; resp&&(i<numVertice); i++){
+				if(getGrau(i)%2 != 0){
+					resp = false;
+				}
+			}
+			return resp;
+		}
+
+		bool isGrafoUnicursal(){
+			bool resp = true;
+			int cont = 0;
+			//se os demais vertices estiverem grau par, 
+			//o primeiro necessariamente ter grau par
+			for(int i=1; resp&&(i<numVertice); i++){
+				if(getGrau(i)%2 != 0){
+					cont++;
+					if(cont > 0){
+						resp = false;
+					}
+				}
+			}
+			return resp;
+		}
+
+//==================================== Fim questao 2 ======================================
+
+//==================================== Inicio: questao 3 ====================================
+
+		// bool isBipartite(){}
+
+		bool isBipartite(){
+			int* visitados = new int[numVertice];
+			int* fila = new int[numVertice];
+			int fila_inicio = 0,
+				fila_final = 0;
+			bool resp = true;
+
+			for(int i=0; i<numVertice; i++){
+				fila[i] = -1;
+				visitados[i] = -1;
+			}
+
+			for(int i=0; (i<numVertice)&&(resp); i++){
+				if(visitados[i] == -1){
+					visitados[i] = 0;
+					fila[fila_final] = i;
+					fila_final++;
+					resp = resp && isBipartite(visitados, fila, fila_inicio, fila_final);
+				}
+			}
+
+			delete visitados;
+			delete fila;
+			return resp;
+		}
+
+		bool isBipartite(int* visitados, int* fila, int& fila_inicio, int& fila_final){
+			bool resp = true;
+			if(fila_inicio != fila_final){
+				for(int i=0; (i<numVertice)&&(resp); i++){
+					if(isAresta(fila[fila_inicio], i)){
+						if(visitados[i] != visitados[fila[fila_inicio]]){
+							if(visitados[i] == -1){
+								visitados[i] = 1 - visitados[fila[fila_inicio]];
+								fila[fila_final] = i;
+								fila_final++;
+							}
+						}else{
+							resp = false;
+						}
+					}
+				}
+				fila_inicio++;
+				resp = resp && isBipartite(visitados, fila, fila_inicio, fila_final);
+			}
+			return resp;
+		}
+
+//==================================== Fim questao 3 ======================================
+
+
 
 	public:
 		boolean lerGrafo(){
@@ -598,6 +726,21 @@ class Grafo_list
 		void imprimirVerticeAresta(){
 			cout << numVertice << " " << numAresta << "\n";
 		}
+
+		void questao2(){
+			string resp = "";
+			resp += (isGrafoSimples()) 		? "SIM " : "NAO "; 
+			resp += (isGrafoRegular()) 		? "SIM " : "NAO ";
+			resp += (isGrafoNulo()) 		? "SIM " : "NAO ";
+			resp += (isGrafoCompleto()) 	? "SIM " : "NAO ";
+			resp += (isGrafoEuleriano()) 	? "SIM " : "NAO ";
+			resp += (isGrafoUnicursal()) 	? "SIM " : "NAO ";
+			cout << resp << endl; 
+		}
+		
+		void questao3(){
+			cout << ((isBipartite()) ? "SIM " : "NAO ") << endl;
+		}
 	
 };
 
@@ -609,12 +752,12 @@ class Grafo_list
 //=====================================================================
 int main(int argc, char **argv){
 
-	/*Grafo *g = new Grafo;
+	Grafo *g = new Grafo;
 
 	while (g->lerGrafo() == true){
-		g->imprimir();
-		g->imprimirVerticeAresta();
-		g->questao2();
+		//g->imprimir();
+		//g->imprimirVerticeAresta();
+		//g->questao2();
 		g->questao3();
 		//g->imprimirPendenteAndIsolado();
 		delete g;
@@ -622,13 +765,4 @@ int main(int argc, char **argv){
 	}
 
 	delete g;
-*//*
-	Grafo g;
-	g.lerGrafo();
-	g.imprimir();
-	g.imprimirVerticeAresta();*/
-	Grafo_list gl;
-	gl.lerGrafo();
-	gl.imprimir();
-	return 0;
 }//--------------------------------------------------------------------
