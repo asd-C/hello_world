@@ -484,7 +484,12 @@ class Grafo_list
 
 	private:
 		void remove_all(){
-
+			if(numVertice > 0 ){
+				for(int i=0; i<numVertice; i++){
+					delete mylist[i];
+				}
+				delete mylist;
+			}
 		}
 
 		//--------------------------------------------------------------------
@@ -493,7 +498,9 @@ class Grafo_list
 		void inserirAresta(Vertice v1, Vertice v2, Peso peso){
 
 			if((v1 != v2)){
-				numAresta++;
+				if((mylist[v2]->find(v1)) == false){
+					numAresta++;
+				}
 				mylist[v1]->push_back(new Celula(v2, peso));
 			}
 			      
@@ -505,48 +512,14 @@ class Grafo_list
 		boolean isAresta(Vertice v1, Vertice v2){
 			return (mylist[v1]->find(v2));
 		}//-------------------------------------------------------------------
-/*
+
 		//--------------------------------------------------------------------
 		// getAresta: Retorna o peso da aresta.
 		//--------------------------------------------------------------------
 		Peso getAresta(Vertice v1, Vertice v2){
-			return (matriz[v1][v2]);
+			return (mylist[v1]->find_cel(v2)->peso);
 		}//-------------------------------------------------------------------
 
-		//--------------------------------------------------------------------
-		// excluirAresta: Exclui uma aresta.
-		//--------------------------------------------------------------------
-		void excluirAresta(Vertice v1, Vertice v2){
-
-			if(v1 > numVertice){
-				printf("ERRO! Vertice %i nao existe no grafico",v1);
-				return;
-			}
-
-			if(v2 > numVertice){
-				printf("ERRO! Vertice %i nao existe no grafico",v2);
-				return;
-			}
-
-			if(matriz[v1][v2] != NULO){
-				matriz[v1][v2] = NULO;
-				numAresta--;
-			}      
-		}//-------------------------------------------------------------------
-
-		//--------------------------------------------------------------------
-		// excluirTodasArestas: Exclui todas as arestas.
-		//--------------------------------------------------------------------
-		void excluirTodasArestas(){
-			for(int i = 0; i < MAX_VERTICE; i++){
-				matriz[i][i] = NULO;
-				for(int j = i + 1; j < MAX_VERTICE; j++){
-					matriz[i][j] = matriz[j][i] = NULO;
-				}
-			}
-			numAresta = 0;
-		}//-------------------------------------------------------------------
-*/
 		//--------------------------------------------------------------------
 		// setNumVertice: Altera a variavel numVertice.
 		//--------------------------------------------------------------------
@@ -621,7 +594,10 @@ class Grafo_list
 
 			printf("\n");
 		}//-------------------------------------------------------------------
-
+		
+		void imprimirVerticeAresta(){
+			cout << numVertice << " " << numAresta << "\n";
+		}
 	
 };
 
@@ -646,13 +622,13 @@ int main(int argc, char **argv){
 	}
 
 	delete g;
-*/
-/*	Grafo g;
+*//*
+	Grafo g;
 	g.lerGrafo();
 	g.imprimir();
-
+	g.imprimirVerticeAresta();*/
 	Grafo_list gl;
 	gl.lerGrafo();
-	gl.imprimir();*/
+	gl.imprimir();
 	return 0;
 }//--------------------------------------------------------------------
