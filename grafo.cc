@@ -13,6 +13,7 @@
 #include <fstream>
 #include <stdio.h>
 #include <string>
+#include <list>
 
 
 using namespace std;
@@ -22,7 +23,7 @@ using namespace std;
 // DEFINICAO DE CONSTANTES
 //=====================================================================
 #define MAX_VERTICE		 			500
-#define MAX_INT         					0x7FFFFFFF
+#define MAX_INT						0x7FFFFFFF
 #define NULO						-1
 
 #define BRANCO						0
@@ -355,6 +356,7 @@ class Grafo {
 
 //==================================== Fim questao 3 ======================================
 
+
 //==================================== Inicio: questao 4 ====================================
 
 
@@ -385,6 +387,74 @@ class Grafo {
 		}
 };
 
+
+class Grafo_lista
+{
+public:
+	Grafo_lista();
+	~Grafo_lista();
+	
+};
+
+//=====================================================================
+// lista
+//=====================================================================
+
+//==================================== class lista ====================================
+class Celula
+{
+	public:
+		int peso;
+		int v2;
+		Celula(int peso_i, int v2_i){
+			peso = peso_i;
+			v2 = v2_i;
+		}
+		~Celula(){}
+};
+
+class myList : public list<Celula*>
+{
+	public:
+		myList(){}
+		~myList(){
+			remove_all();
+		}
+		bool find(int a){
+			bool resp = false;
+			for (list<Celula*>::iterator it = begin(); it != end(); it++){
+				if((*it)->v2 == a){
+					resp = true;
+				}
+			}
+			return resp;
+		}
+
+		bool remove(int a){
+			bool resp = false;
+			for (list<Celula*>::iterator it = begin(); it != end(); it++){
+				if((*it)->v2 == a){
+					delete *it;
+					erase(it);
+					resp = true;
+				}
+			}
+			return resp;
+		}
+
+	private:
+		void remove_all(){
+			for (list<Celula*>::iterator it = begin(); it != end(); it++){
+				delete *it;
+				erase(it);
+			}
+		}
+};
+
+//==================================== class lista ====================================
+
+
+//==================================== class grafo_lista ====================================
 
 //=====================================================================
 // FUNCAO PRINCIPAL
